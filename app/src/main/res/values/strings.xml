@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">肩扛马</string>
+    <string name="health_code">健康码</string>
+    <string name="usage">绿码：凭此码可在%1$s范围内通行，请主动出示，配合检查；并做好自身防护工作，码颜色将根据您的申报由当地政府按照相关政策动态更新，出行前请仔细检查您的健康码</string>
+    <string name="fill_in_again">重新填写</string>
+    <string name="family_agency">家人代办</string>
+    <string name="hotline">服务热线：</string>
+    <string name="provider">— 本服务由当地人民政府提供 —</string>
+    <string name="popular_question">常见问题</string>
+    <string name="user_name">姓名</string>
+    <string name="identity_id">证件号码</string>
+    <string name="tips">网络异常！</string>
+    <string name="default_province">北京市</string>
+    <string name="default_city">北京</string>
+    <string name="default_hotline">010-12345/010-114</string>
+    <string name="default_name">马康健</string>
+    <string name="default_id">1111 1119 9001 0100 11</string>
+    <string name="default_content">"https://play.google.com/store/apps/details?id=org.pix.healthcode"</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="个性化">
+        <ListPreference
+            android:defaultValue="@string/default_province"
+            android:entries="@array/province"
+            android:entryValues="@array/province"
+            android:key="KEY_PROVINCE"
+            android:title="省区" />
+        <EditTextPreference
+            android:defaultValue="@string/default_city"
+            android:key="KEY_CITY"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="城市" />
+        <EditTextPreference
+            android:defaultValue="@string/default_hotline"
+            android:key="KEY_HOTLINE"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="热线" />
+        <EditTextPreference
+            android:defaultValue="@string/default_name"
+            android:key="KEY_NAME"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="姓名" />
+        <EditTextPreference
+            android:defaultValue="@string/default_id"
+            android:key="KEY_ID"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="身份证" />
+        <EditTextPreference
+            android:defaultValue="@string/default_content"
+            android:key="KEY_CONTENT"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:title="二维码内容"/>
+    </PreferenceCategory>
+</PreferenceScreen>
