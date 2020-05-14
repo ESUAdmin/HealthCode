@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">健康码演示</string>
+    <string name="health_code">健康码</string>
+</resources>

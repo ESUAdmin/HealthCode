@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -25,6 +26,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
@@ -33,80 +35,167 @@ import java.util.TimerTask;
 public class MainActivity extends Activity implements Handler.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
     private Handler handler = null;
     private Timer timer = null;
-    private SharedPreferences prefs;
+    private SharedPreferences sp;
+    private boolean isHz;
 
     @Override
     public boolean handleMessage(Message msg) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        date.setTime(System.currentTimeMillis());
-        String strTime = fmt.format(date);
-        TextView txtDateTime = findViewById(R.id.txtDateTime);
-        txtDateTime.setText(strTime);
+        updateDateTimeView();
         return false;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         switch(key) {
+            case "KEY_STYLE":
+                updatePage();
+                break;
+            case "KEY_COLOR":
+                updateQrcode();
+                updateCheckpoints();
+                break;
             case "KEY_PROVINCE":
-                String value = sp.getString(key, getString(R.string.default_province));
-                TextView view = findViewById(R.id.txtReadme);
-                String readme = String.format(getString(R.string.usage), value);
-                view.setText(readme);
+                updateCheckpoints();
                 break;
             case "KEY_CITY":
-                value = sp.getString(key, getString(R.string.default_city));
-                view = findViewById(R.id.txtTitleCity);
-                view.setText(value);
-                view = findViewById(R.id.txtIdCity);
-                view.setText(value);
+                updateCityViews();
                 break;
             case "KEY_HOTLINE":
-                value = sp.getString(key, getString(R.string.default_hotline));
-                view = findViewById(R.id.txtHotline);
-                view.setText(value);
+                updateHotlineView();
                 break;
             case "KEY_NAME":
-                value = sp.getString(key, getString(R.string.default_name));
-                view = findViewById(R.id.txtUserName);
-                view.setText(value);
+                updateNameView();
                 break;
             case "KEY_ID":
-                value = sp.getString(key, getString(R.string.default_id));
-                ToggleButton btnIdVisibility = findViewById(R.id.btnIdVisibility);
-                boolean visible = btnIdVisibility.isChecked();
-                if(visible) {
-                    view = findViewById(R.id.txtUserName);
-                    view.setText(value);
-                }
+                updateIdView();
                 break;
             case "KEY_CONTENT":
-                ImageView imgQrcode = findViewById(R.id.imgQrcode);
-                value = sp.getString(key, getString(R.string.default_content));
-                Bitmap bmp = genQrcode(value, getColor(R.color.colorQrcode));
-                if(bmp != null) {
-                    imgQrcode.setImageBitmap(bmp);
-                }
+                updateQrcode();
                 break;
+        }
+    }
+
+    private void updatePage() {
+        updateCityViews();
+        updateNameView();
+        updateIdView();
+        updateQrcode();
+        updateCheckpoints();
+        updateHotlineView();
+    }
+    private void updateCheckpoints() {
+        String defProvince = getResources().getStringArray(R.array.provinces)[0];
+        String province = sp.getString("KEY_PROVINCE", defProvince);
+        String[] colorNames = getResources().getStringArray(R.array.code_names);
+        String colorName = sp.getString("KEY_COLOR", colorNames[0]);
+        int index = Arrays.asList(colorNames).indexOf(colorName);
+        String fmtStr = getResources().getStringArray(R.array.checkpoints)[index];
+        String text = String.format(fmtStr, colorName, province);
+        text = text.concat(getString(R.string.notes));
+        TextView view = findViewById(R.id.txtCheckpoints);
+        view.setText(text);
+    }
+    private void updateCityViews() {
+        String defCity = getResources().getStringArray(R.array.北京市cities)[0];
+        String city = sp.getString("KEY_CITY", defCity);
+        TextView view = findViewById(R.id.txtTitleCity);
+        view.setText(city);
+        if(!isHz) {
+            view = findViewById(R.id.txtIdCity);
+            if(view != null) {
+                view.setText(city);
+            }
+        }
+    }
+    private void updateDateTimeView() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis());
+        if(isHz) {
+            DateFormat fmt = new SimpleDateFormat("M月dd日");
+            TextView txtDate = findViewById(R.id.txtDate);
+            txtDate.setText(fmt.format(date));
+            fmt = new SimpleDateFormat("HH:mm:ss");
+            TextView txtTime = findViewById(R.id.txtTime);
+            txtTime.setText(fmt.format(date));
+        } else {
+            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            TextView txtDateTime = findViewById(R.id.txtDateTime);
+            txtDateTime.setText(fmt.format(date));
+        }
+    }
+    private void updateHotlineView() {
+        String defHotline = getResources().getStringArray(R.array.北京市telcodes)[0] + "12345-6";
+        String hotline = sp.getString("KEY_HOTLINE", defHotline);
+        TextView view = findViewById(R.id.txtHotline);
+        view.setText(hotline);
+    }
+    private void updateNameView() {
+        String name = sp.getString("KEY_NAME", getString(R.string.default_name));
+        TextView view = findViewById(R.id.txtUserName);
+        view.setText(name);
+    }
+    private void updateIdView() {
+        if(isHz) {
+            return;
+        }
+        ToggleButton btnIdVisibility = findViewById(R.id.btnIdVisibility);
+        boolean visible = btnIdVisibility.isChecked();
+        TextView view = findViewById(R.id.txtIdentityId);
+        if(visible) {
+            String idStr = sp.getString("KEY_ID", getString(R.string.default_id));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i<idStr.length(); i++) {
+                sb.append(idStr.charAt(i));
+                if(i % 4 == 3) {
+                    sb.append(' ');
+                }
+            }
+            view.setText(sb.toString());
+        } else {
+            view.setText("**** **** **** **** **");
+        }
+    }
+    private void updateQrcode() {
+        ImageView imgQrcode = findViewById(R.id.imgQrcode);
+        String text = sp.getString("KEY_CONTENT", getString(R.string.default_content));
+        String defColorName = getResources().getStringArray(R.array.code_names)[0];
+        String resIdStr = "R.color."+sp.getString("KEY_COLOR", defColorName);
+        int resId = ResourceUtil.getId(this, resIdStr);
+        int color = getColor(resId);
+        Bitmap bmp = genQrcode(text, color);
+        if(bmp != null) {
+            imgQrcode.setImageBitmap(bmp);
+        }
+        if(isHz) {
+            TextView hospitleTipView = findViewById(R.id.txtHospitleTip);
+            hospitleTipView.setTextColor(color);
+            RelativeLayout layout = findViewById(R.id.bgHealthColor);
+            layout.setBackgroundColor(color);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_default);
+
         handler = new Handler(this);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.registerOnSharedPreferenceChangeListener(this);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
         loadConfig();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        isHz = sp.getString("KEY_CITY", "").equals("杭州");
+        if(isHz) {
+            setContentView(R.layout.activity_hz);
+        } else {
+            setContentView(R.layout.activity_default);
+        }
+        updatePage();
+        sp.registerOnSharedPreferenceChangeListener(this);
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
@@ -120,16 +209,34 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     @Override
     protected void onPause() {
         timer.cancel();
+        sp.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
     private void loadConfig() {
-        onSharedPreferenceChanged(prefs, "KEY_PROVINCE");
-        onSharedPreferenceChanged(prefs, "KEY_CITY");
-        onSharedPreferenceChanged(prefs, "KEY_NAME");
-        onSharedPreferenceChanged(prefs, "KEY_ID");
-        onSharedPreferenceChanged(prefs, "KEY_HOTLINE");
-        onSharedPreferenceChanged(prefs, "KEY_CONTENT");
+        if(!sp.contains("KEY_COLOR")) {
+            String defColorName = getResources().getStringArray(R.array.code_names)[0];
+            sp.edit().putString("KEY_COLOR", defColorName).apply();
+        }
+        String defProvince = getResources().getStringArray(R.array.provinces)[0];
+        if(!sp.contains("KEY_PROVINCE")) {
+            sp.edit().putString("KEY_PROVINCE", defProvince).apply();
+        }
+        if(!sp.contains("KEY_CITY")) {
+            String resName = "R.array."+ sp.getString("KEY_PROVINCE", defProvince)+"cities";
+            int resId = ResourceUtil.getId(this, resName);
+            String defCity = getResources().getStringArray(resId)[0];
+            sp.edit().putString("KEY_CITY", defCity).apply();
+        }
+        if(!sp.contains("KEY_HOTLINE")) {
+            String resName = "R.array."+ sp.getString("KEY_PROVINCE", defProvince)+"telcodes";
+            int resId = ResourceUtil.getId(this, resName);
+            String defHotline = getResources().getStringArray(resId)[0];
+            if(!defHotline.startsWith("+")) {
+                defHotline = defHotline.concat("12345-6");
+            }
+            sp.edit().putString("KEY_HOTLINE", defHotline).apply();
+        }
     }
 
     public void quit(View view) {
@@ -137,19 +244,13 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     }
 
     public void showError(View view) {
-        Toast t = Toast.makeText(this, R.string.tips, Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         t.show();
     }
 
     public void toggleIdNumber(View view) {
-        ToggleButton btn = (ToggleButton) view;
-        TextView txtId = findViewById(R.id.txtIdentityId);
-        if(btn.isChecked()) {
-            txtId.setText(prefs.getString("KEY_ID", getString(R.string.default_id)));
-        } else {
-            txtId.setText("**** **** **** **** **");
-        }
+        updateIdView();
     }
 
     public void showOptions(View view) {

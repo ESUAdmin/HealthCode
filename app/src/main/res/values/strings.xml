@@ -1,19 +1,23 @@
 <resources>
-    <string name="app_name">肩扛马</string>
-    <string name="health_code">健康码</string>
-    <string name="usage">绿码：凭此码可在%1$s范围内通行，请主动出示，配合检查；并做好自身防护工作，码颜色将根据您的申报由当地政府按照相关政策动态更新，出行前请仔细检查您的健康码</string>
-    <string name="fill_in_again">重新填写</string>
-    <string name="family_agency">家人代办</string>
-    <string name="hotline">服务热线：</string>
-    <string name="provider">— 本服务由当地人民政府提供 —</string>
-    <string name="popular_question">常见问题</string>
-    <string name="user_name">姓名</string>
-    <string name="identity_id">证件号码</string>
-    <string name="tips">网络异常！</string>
-    <string name="default_province">北京市</string>
-    <string name="default_city">北京</string>
-    <string name="default_hotline">010-12345/010-114</string>
-    <string name="default_name">马康健</string>
-    <string name="default_id">1111 1119 9001 0100 11</string>
-    <string name="default_content">"https://play.google.com/store/apps/details?id=org.pix.healthcode"</string>
+    <string name="app_name">Health Code Demo</string>
+    <string name="health_code">Health code</string>
+    <string name="notes" translatable="false">码颜色将根据您的申报由当地政府按照相关政策动态更新，出行前请仔细检查您的健康码。</string>
+    <string name="hospitle_tip" translatable="false">本码支持在杭医疗机构挂号、就诊及医保结算，直接出示扫码使用</string>
+    <string name="fill_in_again" translatable="false">重新填写</string>
+    <string name="family_agency" translatable="false">家人代办</string>
+    <string name="complain" translatable="false">网络申诉平台</string>
+    <string name="goto_hospitle" translatable="false">我去就医</string>
+    <string name="data_share" translatable="false">依托全国一体化政务服务平台\n开展跨省（区、市）数据共享和互通互认</string>
+    <string name="hotline" translatable="false">服务热线：</string>
+    <string name="provider" translatable="false">— 本服务由当地人民政府提供 —</string>
+    <string name="provider_hz" translatable="false">本服务由杭州市人民政府提供</string>
+    <string name="popular_question" translatable="false">常见问题</string>
+    <string name="lang_zh_cn" translatable="false">中文</string>
+    <string name="lang_en_us" translatable="false">English</string>
+    <string name="user_name" translatable="false">姓名</string>
+    <string name="identity_id" translatable="false">证件号码</string>
+    <string name="error" translatable="false">连接失败，请检查网络！</string>
+    <string name="default_name" translatable="false">马康康</string>
+    <string name="default_id" translatable="false">11010119900101004x</string>
+    <string name="default_content" translatable="false">"https://play.google.com/store/apps/details?id=org.pix.healthcode"</string>
 </resources>

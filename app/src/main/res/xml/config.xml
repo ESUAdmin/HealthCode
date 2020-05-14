@@ -2,19 +2,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="个性化">
         <ListPreference
-            android:defaultValue="@string/default_province"
-            android:entries="@array/province"
-            android:entryValues="@array/province"
+            android:entries="@array/code_names"
+            android:entryValues="@array/code_names"
+            android:key="KEY_COLOR"
+            android:title="健康码颜色" />
+        <ListPreference
+            android:entries="@array/provinces"
+            android:entryValues="@array/provinces"
             android:key="KEY_PROVINCE"
             android:title="省区" />
-        <EditTextPreference
-            android:defaultValue="@string/default_city"
+        <ListPreference
             android:key="KEY_CITY"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
             android:title="城市" />
         <EditTextPreference
-            android:defaultValue="@string/default_hotline"
             android:key="KEY_HOTLINE"
             android:selectAllOnFocus="true"
             android:singleLine="true"

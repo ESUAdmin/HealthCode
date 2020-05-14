@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@android:color/black"
-            android:text="北京"/>
+            android:text="城市"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="15sp"
                             android:textStyle="bold"
-                            android:text="杭州"/>
+                            android:text="城市"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                         android:text="@string/user_name"/>
                     <TextView
                         android:id="@+id/txtUserName"
-                        android:text="张三"
+                        android:text="@string/default_name"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
                         android:id="@+id/txtIdentityId"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
-                        android:text="**** **** **** **** **"
+                        android:text="@string/default_id"
                         android:layout_marginBottom="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -183,7 +183,6 @@
                     android:gravity="center_horizontal"
                     android:textSize="28sp"
                     android:textStyle="bold"
-                    android:text="2020-01-01 00:00:00"
                     android:alpha="0.7"
                     android:textColor="@android:color/primary_text_light"/>
                 <ImageView
@@ -208,12 +207,12 @@
                         android:textColor="#1668ff"
                         android:text="ⓘ"/>
                     <TextView
-                        android:id="@+id/txtReadme"
+                        android:id="@+id/txtCheckpoints"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/secondary_text_light"
                         android:textSize="12sp"
-                        android:text="@string/usage"/>
+                        android:text="@string/notes"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -263,7 +262,6 @@
                 <TextView
                     android:id="@+id/txtHotline"
                     android:layout_width="wrap_content"
-                    android:text="01-12345/010-114"
                     android:textColor="@android:color/primary_text_light"
                     android:alpha="0.7"
                     android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
