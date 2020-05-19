@@ -61,7 +61,7 @@
                 android:id="@+id/bgHealthColor"
                 android:layout_width="match_parent"
                 android:layout_height="144dp"
-                android:background="@color/绿码"
+                android:background="@color/green"
                 />
             <LinearLayout
                 android:id="@+id/mainLayout"

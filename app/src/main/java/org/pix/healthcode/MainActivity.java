@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -36,7 +37,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     private Handler handler = null;
     private Timer timer = null;
     private SharedPreferences sp;
-    private boolean isHz;
+    private boolean isHangzhou;
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -47,9 +48,6 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         switch(key) {
-            case "KEY_STYLE":
-                updatePage();
-                break;
             case "KEY_COLOR":
                 updateQrcode();
                 updateCheckpoints();
@@ -86,21 +84,21 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     private void updateCheckpoints() {
         String defProvince = getResources().getStringArray(R.array.provinces)[0];
         String province = sp.getString("KEY_PROVINCE", defProvince);
-        String[] colorNames = getResources().getStringArray(R.array.code_names);
+        String[] colorNames = getResources().getStringArray(R.array.code_color_names);
         String colorName = sp.getString("KEY_COLOR", colorNames[0]);
-        int index = Arrays.asList(colorNames).indexOf(colorName);
-        String fmtStr = getResources().getStringArray(R.array.checkpoints)[index];
+        int colorIndex = Arrays.asList(colorNames).indexOf(colorName);
+        String fmtStr = getResources().getStringArray(R.array.checkpoints)[colorIndex];
         String text = String.format(fmtStr, colorName, province);
         text = text.concat(getString(R.string.notes));
         TextView view = findViewById(R.id.txtCheckpoints);
         view.setText(text);
     }
     private void updateCityViews() {
-        String defCity = getResources().getStringArray(R.array.北京市cities)[0];
+        String defCity = getResources().getStringArray(R.array.beijin_cities)[0];
         String city = sp.getString("KEY_CITY", defCity);
         TextView view = findViewById(R.id.txtTitleCity);
         view.setText(city);
-        if(!isHz) {
+        if(!isHangzhou) {
             view = findViewById(R.id.txtIdCity);
             if(view != null) {
                 view.setText(city);
@@ -112,7 +110,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         calendar.setTimeInMillis(System.currentTimeMillis());
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
-        if(isHz) {
+        if(isHangzhou) {
             DateFormat fmt = new SimpleDateFormat("M月dd日");
             TextView txtDate = findViewById(R.id.txtDate);
             txtDate.setText(fmt.format(date));
@@ -126,7 +124,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         }
     }
     private void updateHotlineView() {
-        String defHotline = getResources().getStringArray(R.array.北京市telcodes)[0] + "12345-6";
+        String defHotline = getResources().getStringArray(R.array.beijin_telcodes)[0] + "12345-6";
         String hotline = sp.getString("KEY_HOTLINE", defHotline);
         TextView view = findViewById(R.id.txtHotline);
         view.setText(hotline);
@@ -137,7 +135,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         view.setText(name);
     }
     private void updateIdView() {
-        if(isHz) {
+        if(isHangzhou) {
             return;
         }
         ToggleButton btnIdVisibility = findViewById(R.id.btnIdVisibility);
@@ -160,15 +158,18 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     private void updateQrcode() {
         ImageView imgQrcode = findViewById(R.id.imgQrcode);
         String text = sp.getString("KEY_CONTENT", getString(R.string.default_content));
-        String defColorName = getResources().getStringArray(R.array.code_names)[0];
-        String resIdStr = "R.color."+sp.getString("KEY_COLOR", defColorName);
+        String defColorName = getResources().getStringArray(R.array.code_color_names)[0];
+        String colorName = sp.getString("KEY_COLOR", defColorName);
+        int colorIndex = Arrays.asList(getResources().getStringArray(R.array.code_color_names)).indexOf(colorName);
+        String colorIdName = getResources().getStringArray(R.array.code_color_ids)[colorIndex];
+        String resIdStr = "R.color."+colorIdName;
         int resId = ResourceUtil.getId(this, resIdStr);
         int color = getColor(resId);
         Bitmap bmp = genQrcode(text, color);
         if(bmp != null) {
             imgQrcode.setImageBitmap(bmp);
         }
-        if(isHz) {
+        if(isHangzhou) {
             TextView hospitleTipView = findViewById(R.id.txtHospitleTip);
             hospitleTipView.setTextColor(color);
             RelativeLayout layout = findViewById(R.id.bgHealthColor);
@@ -188,8 +189,8 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
     @Override
     protected void onResume() {
         super.onResume();
-        isHz = sp.getString("KEY_CITY", "").equals("杭州");
-        if(isHz) {
+        isHangzhou = sp.getString("KEY_CITY", "").equals("杭州");
+        if(isHangzhou) {
             setContentView(R.layout.activity_hz);
         } else {
             setContentView(R.layout.activity_default);
@@ -215,21 +216,24 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
 
     private void loadConfig() {
         if(!sp.contains("KEY_COLOR")) {
-            String defColorName = getResources().getStringArray(R.array.code_names)[0];
+            String defColorName = getResources().getStringArray(R.array.code_color_names)[0];
             sp.edit().putString("KEY_COLOR", defColorName).apply();
         }
         String defProvince = getResources().getStringArray(R.array.provinces)[0];
         if(!sp.contains("KEY_PROVINCE")) {
             sp.edit().putString("KEY_PROVINCE", defProvince).apply();
         }
+        String province = sp.getString("KEY_PROVINCE", defProvince);
+        int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
+        String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
         if(!sp.contains("KEY_CITY")) {
-            String resName = "R.array."+ sp.getString("KEY_PROVINCE", defProvince)+"cities";
+            String resName = "R.array."+provinceId+"_cities";
             int resId = ResourceUtil.getId(this, resName);
             String defCity = getResources().getStringArray(resId)[0];
             sp.edit().putString("KEY_CITY", defCity).apply();
         }
         if(!sp.contains("KEY_HOTLINE")) {
-            String resName = "R.array."+ sp.getString("KEY_PROVINCE", defProvince)+"telcodes";
+            String resName = "R.array."+provinceId+"_telcodes";
             int resId = ResourceUtil.getId(this, resName);
             String defHotline = getResources().getStringArray(resId)[0];
             if(!defHotline.startsWith("+")) {

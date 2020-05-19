@@ -2,8 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="个性化">
         <ListPreference
-            android:entries="@array/code_names"
-            android:entryValues="@array/code_names"
+            android:entries="@array/code_color_names"
+            android:entryValues="@array/code_color_names"
             android:key="KEY_COLOR"
             android:title="健康码颜色" />
         <ListPreference

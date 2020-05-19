@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="action">#1668FF</color>
-    <color name="绿码">#56AC6C</color>
-    <color name="黄码">#EACA43</color>
-    <color name="橙码">#F6712C</color>
-    <color name="红码">#FF0000</color>
+    <color name="green">#56AC6C</color>
+    <color name="yellow">#EACA43</color>
+    <color name="orange">#F6712C</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -7,6 +7,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
+import java.util.Arrays;
+
 public class ConfigActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SharedPreferences sp;
 
@@ -22,7 +24,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
     protected void onResume() {
         super.onResume();
         ListPreference listPreference = (ListPreference) findPreference("KEY_COLOR");
-        String defColorName = getResources().getStringArray(R.array.code_names)[0];
+        String defColorName = getResources().getStringArray(R.array.code_color_names)[0];
         String colorName = sp.getString("KEY_COLOR", defColorName);
         listPreference.setSummary(colorName);
 
@@ -32,14 +34,17 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
         listPreference.setSummary(province);
 
         listPreference = (ListPreference) findPreference("KEY_CITY");
-        int id = ResourceUtil.getId(this, "R.array." + province + "cities");
+        int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
+        String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
+        int id = ResourceUtil.getId(this, "R.array." + provinceId + "_cities");
         String defCity = getResources().getStringArray(id)[0];
         listPreference.setSummary(sp.getString("KEY_CITY", defCity));
         listPreference.setEntries(id);
         listPreference.setEntryValues(id);
 
         EditTextPreference editTextPreference = (EditTextPreference) findPreference("KEY_HOTLINE");
-        String defHotline = getResources().getStringArray(R.array.北京市telcodes)[0] + "12345-6";
+        id = ResourceUtil.getId(this, "R.array." + provinceId + "_telcodes");
+        String defHotline = getResources().getStringArray(id)[0] + "12345-6";
         editTextPreference.setSummary(sp.getString("KEY_HOTLINE", defHotline));
 
         editTextPreference = (EditTextPreference) findPreference("KEY_NAME");
@@ -71,7 +76,10 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
             ListPreference lp = (ListPreference) pref;
             lp.setSummary(lp.getEntry());
             if(key.equals("KEY_PROVINCE")) {
-                int id = ResourceUtil.getId(this, "R.array." + lp.getValue() + "cities");
+                String province = lp.getValue();
+                int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
+                String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
+                int id = ResourceUtil.getId(this, "R.array." + provinceId + "_cities");
                 ListPreference prefCity = (ListPreference) findPreference("KEY_CITY");
                 prefCity.setEntries(id);
                 prefCity.setEntryValues(id);
@@ -87,7 +95,9 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
     }
 
     private void updateHotline(String province, int index) {
-        int id = ResourceUtil.getId(this, "R.array." + province + "telcodes");
+        int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
+        String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
+        int id = ResourceUtil.getId(this, "R.array." + provinceId + "_telcodes");
         String[] telcodeArray = getResources().getStringArray(id);
         String hotline = telcodeArray[index];
         if(!hotline.startsWith("+")) {
