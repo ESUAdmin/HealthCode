@@ -78,17 +78,46 @@
                     android:layout_marginRight="18dp"
                     android:layout_marginTop="12dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/txtDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
                         android:layout_marginTop="18dp"
                         android:gravity="center_horizontal"
-                        android:textSize="56sp"
-                        android:textStyle="bold"
-                        android:alpha="0.7"
-                        android:text="5月15日"
-                        android:textColor="@android:color/primary_text_light"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txtMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="56sp"
+                            android:textStyle="bold"
+                            android:alpha="0.8"
+                            android:text="5"
+                            android:textColor="@android:color/primary_text_light"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="56sp"
+                            android:textStyle="normal"
+                            android:alpha="0.8"
+                            android:text="月"
+                            android:textColor="@android:color/primary_text_light"/>
+                        <TextView
+                            android:id="@+id/txtDay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="56sp"
+                            android:textStyle="bold"
+                            android:alpha="0.8"
+                            android:text="15"
+                            android:textColor="@android:color/primary_text_light"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="56sp"
+                            android:textStyle="normal"
+                            android:alpha="0.8"
+                            android:text="日"
+                            android:textColor="@android:color/primary_text_light"/>
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/txtTime"
                         android:layout_width="match_parent"
@@ -96,7 +125,7 @@
                         android:gravity="center_horizontal"
                         android:textSize="60sp"
                         android:textStyle="bold"
-                        android:alpha="0.7"
+                        android:alpha="0.8"
                         android:text="09:21:34"
                         android:textColor="@android:color/primary_text_light"/>
                     <ImageView
@@ -110,13 +139,13 @@
                         android:id="@+id/layoutAccount"
                         android:layout_marginLeft="24dp"
                         android:layout_marginRight="24dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
                             android:id="@+id/txtUserName"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:gravity="center_vertical"
                             android:textColor="@android:color/primary_text_light"
                             android:text="@string/default_name"
@@ -124,17 +153,28 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/imgQrcode"
-                        android:layout_marginTop="12dp"
+                    <RelativeLayout
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitCenter"
                         android:layout_width="180dp"
-                        android:layout_height="180dp"/>
+                        android:layout_height="180dp">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/hz_qrcode_bg"
+                            android:layout_centerInParent="true"/>
+                        <ImageView
+                            android:id="@+id/imgQrcode"
+                            android:scaleType="fitCenter"
+                            android:layout_centerInParent="true"
+                            android:layout_width="168dp"
+                            android:layout_height="168dp"/>
+                    </RelativeLayout>
                     <TextView
                         android:id="@+id/txtHospitleTip"
                         android:text="@string/hospitle_tip"
                         android:textSize="16sp"
+                        android:textStyle="normal"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
                         android:layout_margin="18dp"
@@ -173,7 +213,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:layout_weight="1.0"
-                            android:textColor="#1668ff"
+                            android:textColor="#2d8df3"
                             android:onClick="showError"
                             android:text="@string/complain"/>
                         <TextView
@@ -181,7 +221,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:layout_weight="1.0"
-                            android:textColor="#1668ff"
+                            android:textColor="#2d8df3"
                             android:onClick="showError"
                             android:text="@string/popular_question"/>
                         <TextView
@@ -189,7 +229,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:layout_weight="1.0"
-                            android:textColor="#1668ff"
+                            android:textColor="#2d8df3"
                             android:onClick="showError"
                             android:text="@string/goto_hospitle"/>
                     </LinearLayout>

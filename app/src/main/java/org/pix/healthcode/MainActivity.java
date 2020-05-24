@@ -1,5 +1,6 @@
 package org.pix.healthcode;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,15 +108,19 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
             }
         }
     }
+    @SuppressLint("NewApi")
     private void updateDateTimeView() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
         if(isHangzhou) {
-            DateFormat fmt = new SimpleDateFormat("M月dd日");
-            TextView txtDate = findViewById(R.id.txtDate);
-            txtDate.setText(fmt.format(date));
+            DateFormat fmt = new SimpleDateFormat("M");
+            TextView txtMonth = findViewById(R.id.txtMonth);
+            txtMonth.setText(fmt.format(date));
+            fmt = new SimpleDateFormat("dd");
+            TextView txtDay = findViewById(R.id.txtDay);
+            txtDay.setText(fmt.format(date));
             fmt = new SimpleDateFormat("HH:mm:ss");
             TextView txtTime = findViewById(R.id.txtTime);
             txtTime.setText(fmt.format(date));
@@ -165,7 +172,16 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         String resIdStr = "R.color."+colorIdName;
         int resId = ResourceUtil.getId(this, resIdStr);
         int color = getColor(resId);
-        Bitmap bmp = genQrcode(text, color);
+        StringBuilder sb = new StringBuilder(text);
+        sb.append("&city=");
+        sb.append(sp.getString("KEY_CITY", ""));
+        sb.append("&name=");
+        sb.append(sp.getString("KEY_NAME", ""));
+        sb.append("&id=");
+        sb.append(sp.getString("KEY_ID", ""));
+        sb.append("&ts=");
+        sb.append(System.currentTimeMillis());
+        Bitmap bmp = genQrcode(sb.toString(), color);
         if(bmp != null) {
             imgQrcode.setImageBitmap(bmp);
         }
@@ -191,8 +207,10 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         super.onResume();
         isHangzhou = sp.getString("KEY_CITY", "").equals("杭州");
         if(isHangzhou) {
+            setBrightness(200);
             setContentView(R.layout.activity_hz);
         } else {
+            setBrightness(-1);
             setContentView(R.layout.activity_default);
         }
         updatePage();
@@ -283,5 +301,17 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setBrightness(int brightness) {
+        Window window = this.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        if (brightness == -1) {
+            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+        } else {
+            //需要注意的是，返回的亮度是介于0~255之间的int类型值（也是为什么我们将seekBar的MaxValue设置为255的原因）
+            lp.screenBrightness = (brightness <= 0 ? 1 : brightness) / 255f;
+        }
+        window.setAttributes(lp);
     }
 }
