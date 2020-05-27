@@ -2,19 +2,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pix.healthcode">
 
-    <uses-feature android:name="android.hardware.screen.portrait"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.screen.portrait" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_logo_512"
+        android:icon="@mipmap/ic_logo_512"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConfigActivity"/>
+        <activity
+            android:name=".ConfigActivity"
+            android:label="@string/menu_user"
+            android:theme="@android:style/Theme.DeviceDefault.Light"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

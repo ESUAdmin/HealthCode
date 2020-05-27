@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/id_customization" android:title="@string/menu_customization">
+        <menu>
+            <item android:id="@+id/id_cust1" android:title="@string/menu_user"/>
+            <item android:id="@+id/id_cust2" android:title="@string/menu_user"/>
+        </menu>
+    </item>
+    <item android:id="@+id/id_help_and_suggestion" android:title="@string/menu_help_and_suggestion"/>
+    <item android:id="@+id/id_about" android:title="@string/menu_about">
+        <menu>
+            <item android:id="@+id/id_version" android:title="@string/menu_version" android:visible="false"/>
+            <item android:id="@+id/id_author" android:title="@string/menu_author" android:visible="false"/>
+            <item android:id="@+id/id_app_info" android:title="@string/menu_app_info"/>
+            <item android:id="@+id/id_privacy" android:title="@string/menu_privacy"/>
+        </menu>
+    </item>
+</menu>

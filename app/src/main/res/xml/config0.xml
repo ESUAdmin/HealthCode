@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/menu_customization">
+    <PreferenceCategory android:title="@string/key_info">
+        <EditTextPreference
+            android:defaultValue="@string/default_name0"
+            android:key="KEY_NAME0"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/config_name" />
+        <EditTextPreference
+            android:defaultValue="@string/default_id0"
+            android:key="KEY_ID0"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/config_id" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/key_location">
+        <ListPreference
+            android:entries="@array/provinces"
+            android:entryValues="@array/provinces"
+            android:key="KEY_PROVINCE0"
+            android:title="@string/config_province" />
+        <ListPreference
+            android:key="KEY_CITY0"
+            android:title="@string/config_city" />
+        <EditTextPreference
+            android:key="KEY_HOTLINE0"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/config_hotline" />
+    </PreferenceCategory>
+    <PreferenceCategory android:key="KEY_OTHER" android:title="@string/key_other">
+        <ListPreference
+            android:entries="@array/code_color_names"
+            android:entryValues="@array/code_color_names"
+            android:key="KEY_COLOR0"
+            android:title="@string/config_code_color" />
+        <EditTextPreference
+            android:defaultValue="@string/default_content"
+            android:key="KEY_CONTENT0"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:title="@string/config_code_content"/>
+    </PreferenceCategory>
+</PreferenceScreen>

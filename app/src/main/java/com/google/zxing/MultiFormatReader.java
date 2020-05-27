@@ -88,7 +88,7 @@ public final class MultiFormatReader implements Reader {
   }
 
   /**
-   * This method adds state to the MultiFormatReader. By setting the hints once, subsequent calls
+   * This method adds state to the MultiFormatReader. By menu the hints once, subsequent calls
    * to decodeWithState(image) can reuse the same set of readers without reallocating memory. This
    * is important for performance in continuous scan clients.
    *

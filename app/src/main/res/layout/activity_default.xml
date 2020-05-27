@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:background="#e7f3ff"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layoutToolBar"
         android:padding="8dp"
-        android:orientation="horizontal"
         android:background="@android:color/white"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
@@ -18,37 +17,43 @@
             android:onClick="quit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/ic_back"/>
         <TextView
             android:id="@+id/txtTitleCity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/btnBack"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@android:color/black"
-            android:text="城市"/>
+            android:text="@string/config_city"/>
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_toEndOf="@+id/txtTitleCity"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@android:color/black"
             android:text="@string/health_code"/>
         <ImageButton
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
             android:onClick="showOptions"
-            android:layout_gravity="right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
             android:textColor="#1668ff"
             android:scaleType="fitEnd"
             android:src="@drawable/ic_more_horiz"/>
-    </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,11 +108,11 @@
                             android:id="@+id/txtIdCity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
                             android:textColor="@android:color/white"
                             android:textSize="15sp"
                             android:textStyle="bold"
-                            android:text="城市"/>
+                            android:text="@string/config_city"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -117,7 +122,7 @@
                             android:text="@string/health_code"/>
                         <ToggleButton
                             android:id="@+id/btnIdVisibility"
-                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:textOff=""
@@ -134,7 +139,7 @@
                         android:text="@string/user_name"/>
                     <TextView
                         android:id="@+id/txtUserName"
-                        android:text="@string/default_name"
+                        android:text="@string/default_name0"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:layout_width="wrap_content"
@@ -150,7 +155,7 @@
                         android:id="@+id/txtIdentityId"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
-                        android:text="@string/default_id"
+                        android:text="@string/default_id0"
                         android:layout_marginBottom="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -160,11 +165,25 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/china_outline"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp"
                     android:scaleY="0.9"
                     android:alpha="0.1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+                <Button
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="24dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:background="@drawable/btn_switch_user"
+                    android:text="@string/action_switch_user"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="14sp"
+                    android:onClick="switchUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -203,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:rotation="180"
-                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
                         android:textColor="#1668ff"
                         android:text="ⓘ"/>
                     <TextView
@@ -250,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.7"
                     android:scaleX="0.8"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_phone"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -281,7 +300,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="#1668ff"
                 android:onClick="showError"
-                android:text="@string/popular_question"/>
+                android:text="@string/faqs"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

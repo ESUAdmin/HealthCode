@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:background="#e7f3ff"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layoutToolBar"
         android:padding="8dp"
-        android:orientation="horizontal"
         android:background="@android:color/white"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
@@ -18,37 +17,43 @@
             android:onClick="quit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/ic_back"/>
         <TextView
             android:id="@+id/txtTitleCity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/btnBack"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@android:color/black"
-            android:text="城市"/>
+            android:text="@string/config_city"/>
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_toEndOf="@+id/txtTitleCity"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textColor="@android:color/black"
             android:text="@string/health_code"/>
         <ImageButton
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
             android:onClick="showOptions"
-            android:layout_gravity="right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
             android:textColor="#1668ff"
             android:scaleType="fitEnd"
             android:src="@drawable/ic_more_horiz"/>
-    </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -135,23 +140,33 @@
                         android:layout_marginRight="18dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/layoutAccount"
                         android:layout_marginLeft="24dp"
                         android:layout_marginRight="24dp"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
                         <TextView
                             android:id="@+id/txtUserName"
                             android:textSize="20sp"
                             android:gravity="center_vertical"
+                            android:layout_alignParentStart="true"
                             android:textColor="@android:color/primary_text_light"
-                            android:text="@string/default_name"
+                            android:text="@string/default_name0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
-                    </LinearLayout>
+                        <TextView
+                            android:id="@+id/btnSwitchUser"
+                            android:textSize="18sp"
+                            android:gravity="center_vertical"
+                            android:layout_alignParentEnd="true"
+                            android:textColor="@color/action"
+                            android:text="@string/action_switch_user"
+                            android:onClick="switchUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_marginTop="10dp"
@@ -159,9 +174,10 @@
                         android:layout_width="180dp"
                         android:layout_height="180dp">
                         <ImageView
+                            android:id="@+id/hz_qrcode_frame"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/hz_qrcode_bg"
+                            android:background="@drawable/hz_qrcode_bg"
                             android:layout_centerInParent="true"/>
                         <ImageView
                             android:id="@+id/imgQrcode"
@@ -191,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:rotation="180"
-                            android:layout_marginRight="12dp"
+                            android:layout_marginEnd="12dp"
                             android:textColor="#1668ff"
                             android:text="ⓘ"/>
                         <TextView
@@ -223,7 +239,7 @@
                             android:layout_weight="1.0"
                             android:textColor="#2d8df3"
                             android:onClick="showError"
-                            android:text="@string/popular_question"/>
+                            android:text="@string/faqs"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -236,8 +252,8 @@
                 </LinearLayout>
                 <Button
                     android:layout_margin="18dp"
-                    android:background="@drawable/btn_bg"
-                    android:text="健康应用"
+                    android:background="@drawable/btn_hz_bg"
+                    android:text="@string/action_health_app"
                     android:textColor="@android:color/primary_text_dark"
                     android:textSize="14sp"
                     android:layout_width="match_parent"
