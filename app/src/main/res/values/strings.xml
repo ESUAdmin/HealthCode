@@ -2,19 +2,19 @@
 <resources>
     <string name="app_name">Health Code Demo</string>
     <string name="health_code">Health Code</string>
-    <string name="notes">And the code color will be timely updated as per your health check-in status and local policies.</string>
+    <string name="notes">" And the code color will be timely updated as per your health check-in status and local policies."</string>
     <string name="hospitle_tip" translatable="false">本码支持在杭医疗机构挂号、就诊及医保结算，直接出示扫码使用</string>
     <string name="fill_in_again">Edit Information</string>
     <string name="family_agency">For Family</string>
     <string name="complain">Complain platform</string>
     <string name="goto_hospitle">See a doctor</string>
     <string name="data_share">The sharing and mutual recognition of data across provinces (regions and cities) can be carried out through the National integrated Government Service Platform.</string>
-    <string name="hotline">Service Hotline: </string>
+    <string name="hotline">"Service Hotline: "</string>
     <string name="provider">— This service is provided by the local government —</string>
     <string name="provider_hz">The service is provided by the city of Hangzhou Municipal People\'s Government.</string>
     <string name="faqs">FAQs</string>
-    <string name="lang_zh_cn">中文</string>
-    <string name="lang_en_us">English</string>
+    <string name="lang_zh_cn" translatable="false">中文</string>
+    <string name="lang_en_us" translatable="false">English</string>
     <string name="user_name">Full name</string>
     <string name="identity_id">ID number</string>
     <string name="error">Connection failed, please check the network!</string>
@@ -28,12 +28,12 @@
     <string name="menu_help_and_suggestion">Help and suggestion</string>
     <string name="menu_version">Version</string>
     <string name="menu_author">Author</string>
-    <string name="menu_app_info">Author</string>
+    <string name="menu_app_info">App info</string>
     <string name="menu_privacy">Privacy</string>
     <string name="key_info">Personal Info</string>
     <string name="key_location">Location Info</string>
     <string name="key_other">Other Info</string>
-    <string name="menu_user">User</string>
+    <string name="menu_edit_user">"Edit Person %1$d Info"</string>
     <string name="config_name">Name</string>
     <string name="config_id">ID number</string>
     <string name="config_province">Province</string>

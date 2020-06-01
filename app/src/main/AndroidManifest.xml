@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".ConfigActivity"
-            android:label="@string/menu_user"
+            android:label="@string/menu_edit_user"
             android:theme="@android:style/Theme.DeviceDefault.Light"
             android:parentActivityName=".MainActivity" />
         <activity

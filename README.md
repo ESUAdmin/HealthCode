@@ -1,3 +1,3 @@
-# 健康码演示
+# 健康码演示 (Health Code Demo)
 
-App已经发布于Google Play store: [https://play.google.com/store/apps/details?id=org.pix.healthcode](https://play.google.com/store/apps/details?id=org.pix.healthcode)
+App has been published on Google Play Store: [https://play.google.com/store/apps/details?id=org.pix.healthcode](https://play.google.com/store/apps/details?id=org.pix.healthcode)

@@ -18,7 +18,7 @@
     <PreferenceCategory android:title="@string/key_location">
         <ListPreference
             android:entries="@array/provinces"
-            android:entryValues="@array/provinces"
+            android:entryValues="@array/province_values"
             android:key="KEY_PROVINCE0"
             android:title="@string/config_province" />
         <ListPreference
@@ -33,7 +33,7 @@
     <PreferenceCategory android:key="KEY_OTHER" android:title="@string/key_other">
         <ListPreference
             android:entries="@array/code_color_names"
-            android:entryValues="@array/code_color_names"
+            android:entryValues="@array/code_color_values"
             android:key="KEY_COLOR0"
             android:title="@string/config_code_color" />
         <EditTextPreference

@@ -12,8 +12,6 @@
     <string name="provider">— 本服务由当地人民政府提供 —</string>
     <string name="provider_hz">本服务由杭州市人民政府提供</string>
     <string name="faqs">常见问题</string>
-    <string name="lang_zh_cn">中文</string>
-    <string name="lang_en_us">English</string>
     <string name="user_name">姓名</string>
     <string name="identity_id">证件号码</string>
     <string name="error">连接失败，请检查网络！</string>
@@ -27,7 +25,7 @@
     <string name="key_info">个人资料</string>
     <string name="key_location">位置信息</string>
     <string name="key_other">其它设置</string>
-    <string name="menu_user">申领人</string>
+    <string name="menu_edit_user">编辑申领人%1$d信息</string>
     <string name="config_name">姓名</string>
     <string name="config_id">身份证号</string>
     <string name="config_province">省区</string>

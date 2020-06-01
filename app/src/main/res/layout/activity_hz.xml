@@ -158,7 +158,7 @@
                             android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/btnSwitchUser"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:gravity="center_vertical"
                             android:layout_alignParentEnd="true"
                             android:textColor="@color/action"

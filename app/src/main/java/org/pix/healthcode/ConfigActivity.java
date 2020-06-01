@@ -9,69 +9,57 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.util.Log;
 
-import java.util.Arrays;
-
 public class ConfigActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private final static String TAG = "ConfigActivity";
-    private SharedPreferences sp;
+    private SharedPreferences sharedPrefs;
     private int userIndex;
+    private PrefsConfig cfg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        cfg = new PrefsConfig(this);
+        sharedPrefs = getPreferenceManager().getSharedPreferences();
         userIndex = getIntent().getIntExtra("INDEX", 0);
         String xmlName = "R.xml.config"+userIndex;
         int xmlId = ResourceUtil.getId(this, xmlName);
         addPreferencesFromResource(xmlId);
-        sp = getPreferenceManager().getSharedPreferences();
-        setTitle(getString(R.string.menu_user) + (userIndex+1));
+        String title = String.format(getString(R.string.menu_edit_user), (userIndex+1));
+        setTitle(title);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume(userIndex="+userIndex);
-        ListPreference listPreference = (ListPreference) findPreference("KEY_COLOR"+userIndex);
-        String defColorName = getResources().getStringArray(R.array.code_color_names)[0];
-        String colorName = sp.getString("KEY_COLOR"+userIndex, defColorName);
-        listPreference.setSummary(colorName);
-
-        listPreference = (ListPreference) findPreference("KEY_PROVINCE"+userIndex);
-        String defProvince = getResources().getStringArray(R.array.provinces)[0];
-        String province = sp.getString("KEY_PROVINCE"+userIndex, defProvince);
-        listPreference.setSummary(province);
+        ListPreference listPreference = (ListPreference) findPreference("KEY_PROVINCE"+userIndex);
+        listPreference.setSummary(cfg.getProvince(userIndex));
 
         listPreference = (ListPreference) findPreference("KEY_CITY"+userIndex);
-        int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
-        String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
-        int id = ResourceUtil.getId(this, "R.array." + provinceId + "_cities");
-        String defCity = getResources().getStringArray(id)[0];
-        listPreference.setSummary(sp.getString("KEY_CITY"+userIndex, defCity));
-        listPreference.setEntries(id);
-        listPreference.setEntryValues(id);
+        listPreference.setSummary(cfg.getCity(userIndex));
+        int resId = cfg.getCitiesResId(userIndex);
+        listPreference.setEntries(resId);
+        listPreference.setEntryValues(resId);
 
         EditTextPreference editTextPreference = (EditTextPreference) findPreference("KEY_HOTLINE"+userIndex);
-        id = ResourceUtil.getId(this, "R.array." + provinceId + "_telcodes");
-        String defHotline = getResources().getStringArray(id)[0] + "12345-6";
-        editTextPreference.setSummary(sp.getString("KEY_HOTLINE"+userIndex, defHotline));
+        editTextPreference.setSummary(cfg.getHotline(userIndex));
 
         editTextPreference = (EditTextPreference) findPreference("KEY_NAME"+userIndex);
-        String defaultNameIdName = "R.string.default_name"+userIndex;
-        int defaultNameId = ResourceUtil.getId(this, defaultNameIdName);
-        editTextPreference.setSummary(sp.getString("KEY_NAME"+userIndex, getString(defaultNameId)));
+        editTextPreference.setSummary(cfg.getUserName(userIndex));
 
         editTextPreference = (EditTextPreference) findPreference("KEY_ID"+userIndex);
-        String defaultIdIdName = "R.string.default_id"+userIndex;
-        int defaultIdId = ResourceUtil.getId(this, defaultIdIdName);
-        editTextPreference.setSummary(sp.getString("KEY_ID"+ userIndex, getString(defaultIdId)));
+        editTextPreference.setSummary(cfg.getUserId(userIndex));
 
         editTextPreference = (EditTextPreference) findPreference("KEY_CONTENT"+userIndex);
         if(editTextPreference != null) {
-            editTextPreference.setSummary(sp.getString("KEY_CONTENT" + userIndex, getString(R.string.default_content)));
+            String content = sharedPrefs.getString("KEY_CONTENT"+userIndex, getString(R.string.default_content));
+            editTextPreference.setSummary(content);
             PreferenceCategory category = (PreferenceCategory) findPreference("KEY_OTHER");
             category.removePreference(editTextPreference);
         }
+
+        listPreference = (ListPreference) findPreference("KEY_COLOR"+userIndex);
+        listPreference.setSummary(cfg.getColorName(userIndex));
 
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
@@ -92,35 +80,29 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
         } else if(pref instanceof ListPreference) {
             ListPreference lp = (ListPreference) pref;
             lp.setSummary(lp.getEntry());
-            if(key.equals("KEY_PROVINCE"+ userIndex)) {
-                String province = lp.getValue();
-                int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
-                String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
-                int id = ResourceUtil.getId(this, "R.array." + provinceId + "_cities");
-                ListPreference prefCity = (ListPreference) findPreference("KEY_CITY"+ userIndex);
-                prefCity.setEntries(id);
-                prefCity.setEntryValues(id);
+            if(key.equals("KEY_PROVINCE"+userIndex)) {
+                cfg.resetCity(userIndex);
+                ListPreference prefCity = (ListPreference) findPreference("KEY_CITY"+userIndex);
+                int resId = cfg.getCitiesResId(userIndex);
+                prefCity.setEntries(resId);
+                prefCity.setEntryValues(resId);
                 prefCity.setValueIndex(0);
+                prefCity.setSummary(cfg.getCity(userIndex));
 
-                updateHotline(lp.getValue(), 0);
+                cfg.resetHotline(userIndex);
+                EditTextPreference prefHotline = (EditTextPreference) findPreference("KEY_HOTLINE"+userIndex);
+                String hotline = cfg.getHotline(userIndex);
+                prefHotline.setText(hotline);
+                prefHotline.setSummary(hotline);
 
-            } else if(key.equals("KEY_CITY"+ userIndex)) {
-                ListPreference prefProvince = (ListPreference) findPreference("KEY_PROVINCE"+ userIndex);
-                updateHotline(prefProvince.getValue(), lp.findIndexOfValue(lp.getValue()));
+            } else if(key.equals("KEY_CITY"+userIndex)) {
+                cfg.resetHotline(userIndex);
+                EditTextPreference prefHotline = (EditTextPreference) findPreference("KEY_HOTLINE"+userIndex);
+                String hotline = cfg.getHotline(userIndex);
+                prefHotline.setText(hotline);
+                prefHotline.setSummary(hotline);
             }
         }
     }
 
-    private void updateHotline(String province, int index) {
-        int provinceIndex = Arrays.asList(getResources().getStringArray(R.array.provinces)).indexOf(province);
-        String provinceId = getResources().getStringArray(R.array.provinces_id)[provinceIndex];
-        int id = ResourceUtil.getId(this, "R.array." + provinceId + "_telcodes");
-        String[] telcodeArray = getResources().getStringArray(id);
-        String hotline = telcodeArray[index];
-        if(!hotline.startsWith("+")) {
-            hotline = hotline.concat("-12345-6");
-        }
-        EditTextPreference prefHotline = (EditTextPreference) findPreference("KEY_HOTLINE"+userIndex);
-        prefHotline.setText(hotline);
-    }
 }

@@ -46,7 +46,6 @@ public class WebViewActivity extends Activity {
         setTitle(title);
         WebView webView = findViewById(R.id.webview);
         webView.loadUrl(url);
-        //系统默认会通过手机浏览器打开网页，为了能够直接通过WebView显示网页，则必须设置
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
