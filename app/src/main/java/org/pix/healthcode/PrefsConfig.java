@@ -255,7 +255,7 @@ public final class PrefsConfig {
     }
     public void load(int userIndex) {
         String[] provinceValues = context.getResources().getStringArray(R.array.province_values);
-        String defProvinceValue = provinceValues[0];
+        String defProvinceValue = provinceValues[userIndex*10];
         if(!sharedPrefs.contains("KEY_PROVINCE"+userIndex)) {
             sharedPrefs.edit().putString("KEY_PROVINCE"+userIndex, defProvinceValue).apply();
         }

@@ -18,6 +18,9 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -38,12 +41,17 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity implements Handler.Callback, SharedPreferences.OnSharedPreferenceChangeListener, PopupMenu.OnMenuItemClickListener {
+    private final static int MSG_UPDATE_TIME = 0;
+    private final static int MSG_PROMPT_OPTIONS = 1;
+
     private Handler handler = null;
     private Timer timer = null;
     private SharedPreferences sharedPrefs;
     private PrefsConfig cfg;
+    private Timer promptAnimTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +77,42 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         };
         timer = new Timer();
         timer.schedule(tt, 0, 66);
+        boolean isNewbie = sharedPrefs.getBoolean("KEY_NEWBIE", true);
+        if(isNewbie) {
+            promptAnimTimer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.sendEmptyMessage(1);
+                }
+            };
+            promptAnimTimer.schedule(task, TimeUnit.SECONDS.toMillis(3), TimeUnit.SECONDS.toMillis(10));
+        }
     }
 
     @Override
     protected void onPause() {
         timer.cancel();
+        if(promptAnimTimer != null) {
+            promptAnimTimer.cancel();
+            promptAnimTimer = null;
+        }
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
     @Override
     public boolean handleMessage(Message msg) {
-        updateDateTimeView();
+        switch(msg.what) {
+            case MSG_UPDATE_TIME:
+                updateDateTimeView();
+                break;
+            case MSG_PROMPT_OPTIONS:
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.prompt_anim);
+                ImageButton btnOptions = findViewById(R.id.btnOptions);
+                btnOptions.startAnimation(animation);
+                break;
+        }
         return false;
     }
 
@@ -267,6 +299,11 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
                 Intent intent = new Intent(this, ConfigActivity.class);
                 intent.putExtra("INDEX", item.getItemId()==R.id.id_cust1 ? 0 : 1);
                 startActivity(intent);
+                sharedPrefs.edit().putBoolean("KEY_NEWBIE", false).apply();
+                if(promptAnimTimer != null) {
+                    promptAnimTimer.cancel();
+                    promptAnimTimer = null;
+                }
                 break;
             case R.id.id_help_and_suggestion:
                 WebViewActivity.startActivity(this, R.string.menu_help_and_suggestion, "file:////android_asset/help.html");
@@ -275,7 +312,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
                 WebViewActivity.startActivity(this, R.string.menu_app_info, "file:////android_asset/appinfo.html");
                 break;
             case R.id.id_privacy:
-                WebViewActivity.startActivity(this, R.string.menu_privacy, "https://sites.google.com/view/morrowindxie-privacy-policy");
+                WebViewActivity.startActivity(this, R.string.menu_privacy, "https://morrowind.github.io/privacypolicy/health-code-demo.html");
                 break;
             default:
                 break;

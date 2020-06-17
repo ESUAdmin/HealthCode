@@ -4,56 +4,7 @@
     android:layout_height="match_parent"
     android:background="#e7f3ff"
     android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/layoutToolBar"
-        android:padding="8dp"
-        android:background="@android:color/white"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:onClick="quit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_back"/>
-        <TextView
-            android:id="@+id/txtTitleCity"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/btnBack"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/black"
-            android:text="@string/config_city"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_toEndOf="@+id/txtTitleCity"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/black"
-            android:text="@string/health_code"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@android:color/transparent"
-            android:onClick="showOptions"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:textColor="#1668ff"
-            android:scaleType="fitEnd"
-            android:src="@drawable/ic_more_horiz"/>
-    </RelativeLayout>
+    <include layout="@layout/toolbar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
