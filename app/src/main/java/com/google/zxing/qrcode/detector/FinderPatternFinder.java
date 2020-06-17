@@ -16,6 +16,9 @@
 
 package com.google.zxing.qrcode.detector;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.ResultPoint;
@@ -605,6 +608,7 @@ public class FinderPatternFinder {
    *         those have similar module size and form a shape closer to a isosceles right triangle.
    * @throws NotFoundException if 3 such finder patterns do not exist
    */
+  @TargetApi(Build.VERSION_CODES.N)
   private FinderPattern[] selectBestPatterns() throws NotFoundException {
 
     int startSize = possibleCenters.size();
