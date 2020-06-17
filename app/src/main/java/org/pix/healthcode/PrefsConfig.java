@@ -95,7 +95,12 @@ public final class PrefsConfig {
         String defCityValue = cities[0];
         String cityValue = sharedPrefs.getString("KEY_CITY"+userIndex, defCityValue);
         List<String> cityValueList = Arrays.asList(cities);
-        return cityValueList.indexOf(cityValue);
+        int cityIndex = cityValueList.indexOf(cityValue);
+        if(cityIndex == -1) {
+            resetCity(userIndex);
+            cityIndex = 0;
+        }
+        return cityIndex;
     }
 
     public void resetHotline(int userIndex) {
