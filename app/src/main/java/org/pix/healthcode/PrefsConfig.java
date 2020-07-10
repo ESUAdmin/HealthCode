@@ -220,10 +220,14 @@ public final class PrefsConfig {
     public String getCodeContent(int userIndex) {
         String text = sharedPrefs.getString("KEY_CONTENT"+userIndex, context.getString(R.string.default_content));
         StringBuilder sb = new StringBuilder(text);
-        sb.append("&city="+getCity());
-        sb.append("&name="+getUserName());
-        sb.append("&id="+getUserId());
-        sb.append("&ts="+System.currentTimeMillis());
+        String province = getProvince(userIndex);
+        if("山东省".equals(province)) {
+        } else {
+            sb.append("&city=" + getCity(userIndex));
+            sb.append("&name=" + getUserName(userIndex));
+            sb.append("&id=" + getUserId(userIndex));
+        }
+        sb.append("&ts=" + System.currentTimeMillis());
         return sb.toString();
     }
     public String getCodeContent() {
@@ -235,13 +239,6 @@ public final class PrefsConfig {
     }
     public void setUserIndex(int userIndex) {
         sharedPrefs.edit().putInt("KEY_USER_INDEX", userIndex).apply();
-    }
-
-    public boolean isHangzhou(int userIndex) {
-        return "杭州".equals(getCity(userIndex));
-    }
-    public boolean isHangzhou() {
-        return isHangzhou(getUserIndex());
     }
 
 
@@ -279,7 +276,7 @@ public final class PrefsConfig {
             sharedPrefs.edit().putString("KEY_ID"+userIndex, getUserId(userIndex)).apply();
         }
         if(!sharedPrefs.contains("KEY_CONTENT"+userIndex)) {
-            sharedPrefs.edit().putString("KEY_CONTENT"+userIndex, getCodeContent(userIndex)).apply();
+            sharedPrefs.edit().putString("KEY_CONTENT"+userIndex, context.getString(R.string.default_content)).apply();
         }
         if(!sharedPrefs.contains("KEY_COLOR"+userIndex)) {
             String defColorResValue = context.getResources().getStringArray(R.array.code_color_values)[0];

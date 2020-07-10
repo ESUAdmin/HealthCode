@@ -159,29 +159,35 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         updateHotlineView();
     }
     private void updateCheckpoints() {
-        String province = cfg.getProvince();
-        String colorName = cfg.getColorName();
-        String checkpoint = cfg.getCheckpoint();
-        String text = String.format(checkpoint, colorName, province);
-        text = text.concat(getString(R.string.notes));
         TextView view = findViewById(R.id.txtCheckpoints);
-        view.setText(text);
+        if(view != null) {
+            String province = cfg.getProvince();
+            String colorName = cfg.getColorName();
+            String checkpoint = cfg.getCheckpoint();
+            String text = String.format(checkpoint, colorName, province);
+            text = text.concat(getString(R.string.notes));
+            view.setText(text);
+        }
     }
     private void updateCityViews() {
         String city = cfg.getCity();
         TextView view = findViewById(R.id.txtTitleCity);
-        view.setText(city);
-        if(!cfg.isHangzhou()) {
-            view = findViewById(R.id.txtIdCity);
-            if(view != null) {
-                view.setText(city);
-            }
+        if(view != null) {
+            view.setText(city);
+        }
+        view = findViewById(R.id.txtIdCity);
+        if(view != null) {
+            view.setText(city);
         }
     }
     private void updateDateTimeView() {
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
-        if(cfg.isHangzhou()) {
+        if(findViewById(R.id.txtDateTime) != null) {
+            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            TextView txtDateTime = findViewById(R.id.txtDateTime);
+            txtDateTime.setText(fmt.format(date));
+        } else {
             DateFormat fmt = new SimpleDateFormat("M", Locale.getDefault());
             TextView txtMonth = findViewById(R.id.txtMonth);
             txtMonth.setText(fmt.format(date));
@@ -191,38 +197,39 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
             fmt = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             TextView txtTime = findViewById(R.id.txtTime);
             txtTime.setText(fmt.format(date));
-        } else {
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            TextView txtDateTime = findViewById(R.id.txtDateTime);
-            txtDateTime.setText(fmt.format(date));
         }
     }
     private void updateHotlineView() {
-        String hotline = cfg.getHotline();
         TextView view = findViewById(R.id.txtHotline);
-        view.setText(hotline);
+        if(view != null) {
+            String hotline = cfg.getHotline();
+            view.setText(hotline);
+        }
     }
     private void updateNameView() {
-        String name = cfg.getUserName();
         TextView view = findViewById(R.id.txtUserName);
-        view.setText(name);
+        if(view != null) {
+            String name = cfg.getUserName();
+            view.setText(name);
+        }
     }
     private void updateIdView() {
-        if(cfg.isHangzhou()) {
-            return;
-        }
         ToggleButton btnIdVisibility = findViewById(R.id.btnIdVisibility);
-        boolean visible = btnIdVisibility.isChecked();
-        String userId = cfg.getUserId();
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<userId.length(); i++) {
-            sb.append(visible ? userId.charAt(i) : '*');
-            if(i % 4 == 3) {
-                sb.append(' ');
+        if(btnIdVisibility != null) {
+            boolean visible = btnIdVisibility.isChecked();
+            String userId = cfg.getUserId();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < userId.length(); i++) {
+                sb.append(visible ? userId.charAt(i) : '*');
+                if (i % 4 == 3) {
+                    sb.append(' ');
+                }
+            }
+            TextView view = findViewById(R.id.txtIdentityId);
+            if(view != null) {
+                view.setText(sb.toString());
             }
         }
-        TextView view = findViewById(R.id.txtIdentityId);
-        view.setText(sb.toString());
     }
     private void updateQrcode() {
         ImageView imgQrcode = findViewById(R.id.imgQrcode);
@@ -233,23 +240,32 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
             imgQrcode.setImageBitmap(bmp);
         }
 
-        if(cfg.isHangzhou()) {
-            TextView hospitleTipView = findViewById(R.id.txtHospitleTip);
+        TextView hospitleTipView = findViewById(R.id.txtHospitleTip);
+        if(hospitleTipView != null) {
             hospitleTipView.setTextColor(colorValue);
-            RelativeLayout layout = findViewById(R.id.bgHealthColor);
-            layout.setBackgroundColor(colorValue);
-            ImageView frameImageView = findViewById(R.id.hz_qrcode_frame);
+        }
+        RelativeLayout bgHealthColor = findViewById(R.id.bgHealthColor);
+        if(bgHealthColor != null) {
+            bgHealthColor.setBackgroundColor(colorValue);
+        }
+        ImageView frameImageView = findViewById(R.id.qrcode_frame);
+        if(frameImageView != null) {
             GradientDrawable frameShape = (GradientDrawable) frameImageView.getBackground();
             DisplayMetrics dm = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(dm);
-            frameShape.setStroke((int) (6*dm.density), colorValue);
+            frameShape.setStroke((int) (6 * dm.density), colorValue);
         }
     }
 
     private void setLayout() {
-        if(cfg.isHangzhou()) {
+        String province = cfg.getProvince();
+        String city = cfg.getCity();
+        if("杭州".equals(city)) {
             setBrightness(0.618f);
-            setContentView(R.layout.activity_hz);
+            setContentView(R.layout.activity_hangzhou);
+        } else if("山东省".equals(province)) {
+            setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
+            setContentView(R.layout.activity_sandong);
         } else {
             setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
             setContentView(R.layout.activity_default);
@@ -276,6 +292,10 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         cfg.setUserIndex(userIndex);
         setLayout();
         updateUI();
+    }
+
+    public void refreshQrcode(View view) {
+        updateQrcode();
     }
 
     public void showOptions(View view) {

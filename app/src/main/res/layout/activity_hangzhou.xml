@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#e7f3ff"
     android:orientation="vertical">
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar_default"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                         android:layout_width="180dp"
                         android:layout_height="180dp">
                         <ImageView
-                            android:id="@+id/hz_qrcode_frame"
+                            android:id="@+id/qrcode_frame"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/hz_qrcode_bg"
