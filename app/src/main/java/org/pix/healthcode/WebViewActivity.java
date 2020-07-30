@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -50,16 +52,31 @@ public class WebViewActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if(url.startsWith("market:")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    intent.setPackage("com.android.vending");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+                    marketIntent.setData(Uri.parse(url));
+                    marketIntent.setPackage("com.android.vending");
+                    marketIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
-                        startActivity(intent);
+                        startActivity(marketIntent);
                     } catch (ActivityNotFoundException e) {
                         Toast.makeText(WebViewActivity.this, R.string.playstore_not_installed, Toast.LENGTH_LONG).show();
                         String newUrl = url.replace("market://", "https://play.google.com/store/apps/");
                         view.loadUrl(newUrl);
+                    }
+                } else if (url.startsWith("mailto:")) {
+                    String email = url.substring(7);
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    String[] emailReciver = new String[] { email };
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, emailReciver);
+                    PackageManager pm = getPackageManager();
+                    try {
+                        PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_about)+" "+pi.applicationInfo.loadLabel(pm));
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                        startActivity(Intent.createChooser(emailIntent, ""));
+                    } catch (PackageManager.NameNotFoundException e) {
+
                     }
                 } else {
                     view.loadUrl(url);

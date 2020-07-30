@@ -170,21 +170,21 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         }
     }
     private void updateCityViews() {
-        String city = cfg.getCity();
+        String province = cfg.getProvince();
         TextView view = findViewById(R.id.txtTitleCity);
         if(view != null) {
-            view.setText(city);
+            view.setText(province);
         }
         view = findViewById(R.id.txtIdCity);
         if(view != null) {
-            view.setText(city);
+            view.setText(province);
         }
     }
     private void updateDateTimeView() {
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
         if(findViewById(R.id.txtDateTime) != null) {
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            DateFormat fmt = new SimpleDateFormat("MM月dd日 HH:mm:ss", Locale.getDefault());
             TextView txtDateTime = findViewById(R.id.txtDateTime);
             txtDateTime.setText(fmt.format(date));
         } else {
