@@ -6,8 +6,8 @@ android {
         applicationId "org.pix.healthcode"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 730
-        versionName '1.5.2'
+        versionCode 1019
+        versionName '1.5.3'
     }
     buildTypes {
         release {

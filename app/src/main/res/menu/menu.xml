@@ -6,6 +6,12 @@
             <item android:id="@+id/id_cust2" android:title="@string/menu_edit_user"/>
         </menu>
     </item>
+    <item android:id="@+id/select_language" android:title="@string/select_language">
+        <menu>
+            <item android:id="@+id/id_lang_en" android:title="@string/language_en" android:checkable="true"/>
+            <item android:id="@+id/id_lang_zh" android:title="@string/language_zh" android:checkable="true"/>
+        </menu>
+    </item>
     <item android:id="@+id/id_help_and_suggestion" android:title="@string/menu_help_and_suggestion"/>
     <item android:id="@+id/id_about" android:title="@string/menu_about">
         <menu>

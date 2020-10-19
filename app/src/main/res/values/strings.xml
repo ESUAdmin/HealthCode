@@ -44,4 +44,7 @@
     <string name="action_switch_user">Other code appliciants</string>
     <string name="action_health_app">Health app</string>
     <string name="playstore_not_installed">Play store not installed.</string>
+    <string name="select_language">选择语言</string>
+    <string name="language_en">英语</string>
+    <string name="language_zh">中文</string>
 </resources>

@@ -3,13 +3,15 @@ package org.pix.healthcode;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
@@ -61,6 +63,7 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         cfg = new PrefsConfig(this);
         cfg.load();
+        setDisplayLanguage();
     }
 
     @Override
@@ -302,10 +305,17 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         PopupMenu pm = new PopupMenu(this, view);
         Menu menu = pm.getMenu();
         getMenuInflater().inflate(R.menu.menu, menu);
-        SubMenu sm = menu.getItem(0).getSubMenu();
+        SubMenu sm = menu.findItem(R.id.id_customization).getSubMenu();
         for(int i=0; i<2; i++) {
             String title = String.format(getString(R.string.menu_edit_user), (i+1));
             sm.getItem(i).setTitle(title);
+        }
+        sm = menu.findItem(R.id.select_language).getSubMenu();
+        String lang = sharedPrefs.getString("LANGUAGE", Locale.getDefault().getLanguage());
+        if (lang.equals(Locale.CHINESE.getLanguage())) {
+            sm.findItem(R.id.id_lang_zh).setChecked(true);
+        } else {
+            sm.findItem(R.id.id_lang_en).setChecked(true);
         }
         pm.setOnMenuItemClickListener(this);
         pm.show();
@@ -325,6 +335,14 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
                     promptAnimTimer = null;
                 }
                 break;
+            case R.id.id_lang_en:
+                sharedPrefs.edit().putString("LANGUAGE", Locale.ENGLISH.getLanguage()).commit();
+                recreate();
+                break;
+            case R.id.id_lang_zh:
+                sharedPrefs.edit().putString("LANGUAGE", Locale.CHINESE.getLanguage()).commit();
+                recreate();
+                break;
             case R.id.id_help_and_suggestion:
                 WebViewActivity.startActivity(this, R.string.menu_help_and_suggestion, "file:////android_asset/help.html");
                 break;
@@ -338,6 +356,19 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
                 break;
         }
         return false;
+    }
+
+    private void setDisplayLanguage() {
+        String langStr = sharedPrefs.getString("LANGUAGE", Locale.getDefault().getLanguage());
+        if (!langStr.equals(Locale.CHINESE.getLanguage()) && !langStr.equals(Locale.ENGLISH.getLanguage())) {
+            langStr = Locale.ENGLISH.getLanguage();
+        }
+        Locale locale = new Locale(langStr);
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        conf.setLocale(locale);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        res.updateConfiguration(conf, dm);
     }
 
     private Bitmap genQrcode(String text, int color) {

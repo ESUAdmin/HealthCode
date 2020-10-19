@@ -36,4 +36,6 @@
     <string name="action_switch_user">切换申领人</string>
     <string name="action_health_app">健康应用</string>
     <string name="playstore_not_installed">未安装Play商店。</string>
-</resources>
+    <string name="select_language">Select language</string>
+    <string name="language_en">English</string>
+    <string name="language_zh">Chinese</string></resources>
