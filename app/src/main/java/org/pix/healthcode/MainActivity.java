@@ -63,12 +63,17 @@ public class MainActivity extends Activity implements Handler.Callback, SharedPr
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         cfg = new PrefsConfig(this);
         cfg.load();
-        setDisplayLanguage();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        setDisplayLanguage();
         setLayout();
         updateUI();
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
